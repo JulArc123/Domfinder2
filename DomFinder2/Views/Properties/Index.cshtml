@@ -1,0 +1,107 @@
+﻿@model IEnumerable<DomFinder2.ViewModels.PropertyViewModel>
+
+@{
+    ViewData["Title"] = "Lista Ogłoszeń";
+    var transactionOptions = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "", Text = "Wybierz" },
+        new SelectListItem { Value = "sprzedaż", Text = "Sprzedaż", Selected = (string)ViewBag.TransactionType == "sprzedaż" },
+        new SelectListItem { Value = "wynajem", Text = "Wynajem", Selected = (string)ViewBag.TransactionType == "wynajem" }
+    };
+}
+
+<h2>Promowane ogłoszenia</h2>
+<a href="@Url.Action("Create")" class="btn btn-primary mb-3">Dodaj Nowe Ogłoszenie</a>
+
+<form asp-action="Index" method="get" class="form-inline mb-3 filter-form">
+    <div class="form-group mb-2">
+        <label for="City" class="sr-only">Miasto</label>
+        <input type="text" class="form-control" id="City" name="City" placeholder="Miasto" value="@ViewBag.City">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="District" class="sr-only">Dzielnica</label>
+        <input type="text" class="form-control" id="District" name="District" placeholder="Dzielnica" value="@ViewBag.District">
+    </div>
+    <div class="form-group mb-2">
+        <label for="TransactionType" class="sr-only">Typ transakcji</label>
+        @Html.DropDownList("TransactionType", transactionOptions, new { @class = "form-control" })
+    </div>
+    <div class="form-group mb-2">
+        <label for="MinPrice" class="sr-only">Cena od</label>
+        <input type="number" class="form-control" id="MinPrice" name="MinPrice" placeholder="Cena od" value="@ViewBag.MinPrice">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="MaxPrice" class="sr-only">Cena do</label>
+        <input type="number" class="form-control" id="MaxPrice" name="MaxPrice" placeholder="Cena do" value="@ViewBag.MaxPrice">
+    </div>
+    <div class="form-group mb-2">
+        <label for="MinArea" class="sr-only">Powierzchnia od</label>
+        <input type="number" class="form-control" id="MinArea" name="MinArea" placeholder="Powierzchnia od" value="@ViewBag.MinArea">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="MaxArea" class="sr-only">Powierzchnia do</label>
+        <input type="number" class="form-control" id="MaxArea" name="MaxArea" placeholder="Powierzchnia do" value="@ViewBag.MaxArea">
+    </div>
+    <div class="form-group mb-2">
+        <label for="MinRooms" class="sr-only">Liczba pokoi od</label>
+        <input type="number" class="form-control" id="MinRooms" name="MinRooms" placeholder="Liczba pokoi od" value="@ViewBag.MinRooms">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="MaxRooms" class="sr-only">Liczba pokoi do</label>
+        <input type="number" class="form-control" id="MaxRooms" name="MaxRooms" placeholder="Liczba pokoi do" value="@ViewBag.MaxRooms">
+    </div>
+    <button type="submit" class="btn btn-secondary mb-2">Szukaj</button>
+</form>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-12 mb-4">
+            <div class="card single-card">
+                <div class="row no-gutters">
+                    <div class="col-md-4 property-img">
+                        @if (item.Property.ImagePaths != null && item.Property.ImagePaths.Count > 0)
+                        {
+                            <div id="carousel-@item.Property.PropertyID" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @for (int i = 0; i < item.Property.ImagePaths.Count; i++)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <img class="d-block w-100 fixed-image" src="@item.Property.ImagePaths[i]" alt="Zdjęcie @i">
+                                        </div>
+                                    }
+                                </div>
+                                <a class="carousel-control-prev" href="#carousel-@item.Property.PropertyID" role="button" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carousel-@item.Property.PropertyID" role="button" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <img class="card-img fixed-image" src="~/images/default-placeholder.png" alt="Brak zdjęcia" />
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Property.Price.ToString("C", new System.Globalization.CultureInfo("pl-PL"))</h5>
+                            <p class="card-text">@item.Property.Title</p>
+                            <p class="card-text"><small>@item.Property.City, @item.Property.District</small></p>
+                            <p class="card-text"><small>@item.Property.Rooms pokoje - @item.Property.Area m²</small></p>
+                            <a href="@Url.Action("Details", new { id = item.Property.PropertyID })" class="btn btn-primary">Zobacz opis ogłoszenia</a>
+                            @if (item.IsEditable)
+                            {
+                                <a href="@Url.Action("Edit", new { id = item.Property.PropertyID })" class="btn btn-warning">Edytuj</a>
+                                <a href="@Url.Action("Delete", new { id = item.Property.PropertyID })" class="btn btn-danger">Usuń</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

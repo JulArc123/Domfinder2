@@ -1,0 +1,38 @@
+﻿@model DomFinder2.Controllers.ManageUserViewModel
+
+@{
+    ViewData["Title"] = "Manage User";
+}
+
+<h1>Manage User</h1>
+
+<h3>@Model.User.Email</h3>
+
+<form asp-action="ToggleAdminRole" method="post">
+    <input type="hidden" name="id" value="@Model.User.Id" />
+    @if (Model.IsAdmin)
+    {
+        <button type="submit" class="btn btn-warning">Usuń role Admina</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-success">Daj role Admina</button>
+    }
+</form>
+
+<form asp-action="BanUser" method="post" class="mt-3">
+    <input type="hidden" name="id" value="@Model.User.Id" />
+    <div class="form-group">
+        <label for="days">Zbanuj na ilość dni:</label>
+        <input type="number" name="days" class="form-control" min="1" max="365" required />
+    </div>
+    <button type="submit" class="btn btn-danger">Zbanuj</button>
+</form>
+
+@if (Model.IsBanned)
+{
+    <form asp-action="UnbanUser" method="post" class="mt-3">
+        <input type="hidden" name="id" value="@Model.User.Id" />
+        <button type="submit" class="btn btn-primary">Odbanuj</button>
+    </form>
+}

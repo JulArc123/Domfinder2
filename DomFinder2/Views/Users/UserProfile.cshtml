@@ -1,0 +1,46 @@
+﻿@model DomFinder2.Models.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "Profil użytkownika";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <img src="~/images/user-icon.png" class="user-icon" alt="User Icon">
+            <h1>@Model.User.UserName</h1>
+            <p>@Model.User.PhoneNumber</p>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Ogłoszenia użytkownika</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Cena</th>
+                        <th>Miasto</th>
+                        <th>Dzielnica</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var property in Model.Properties)
+                    {
+                        <tr>
+                            <td>@property.Title</td>
+                            <td>@property.Price.ToString("C", new System.Globalization.CultureInfo("pl-PL")) PLN</td>
+                            <td>@property.City</td>
+                            <td>@property.District</td>
+                            <td>
+                                <a href="@Url.Action("Details", "Properties", new { id = property.PropertyID })" class="btn btn-primary">Zobacz</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

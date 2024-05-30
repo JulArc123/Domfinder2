@@ -1,0 +1,287 @@
+﻿@model DomFinder2.Models.Property
+
+@{
+    ViewData["Title"] = "Edytuj ogłoszenie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cities = new List<string> { "Warszawa", "Kraków", "Łódź", "Wrocław", "Poznań", "Gdańsk", "Szczecin", "Bydgoszcz", "Lublin", "Katowice", "Białystok", "Gdynia", "Częstochowa", "Radom", "Toruń", "Rzeszów", "Sosnowiec", "Kielce", "Gliwice", "Zabrze" };
+    var energyCertificates = new List<string> { "A", "B", "C", "D", "E", "F", "G" };
+    var rooms = Enumerable.Range(1, 10).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }).ToList();
+    var ownershipTypes = new List<string> { "Własność", "Spółdzielcze własnościowe", "Najem", "Dzierżawa" };
+    var buildingTypes = new List<string> { "Blok", "Kamienica", "Dom jednorodzinny", "Szeregowiec", "Apartamentowiec" };
+    var advertiserTypes = new List<string> { "Osoba prywatna", "Biuro nieruchomości", "Deweloper" };
+    var floors = Enumerable.Range(0, 20).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }).ToList();
+}
+
+<h1>Edytuj ogłoszenie</h1>
+
+<form asp-action="Edit" enctype="multipart/form-data" class="form-horizontal bg-light p-3">
+    <div class="form-group">
+        <h2>Informacje podstawowe</h2>
+        <input type="hidden" asp-for="PropertyID" />
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="ImagePaths" />
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Area" class="control-label"></label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Rooms" class="control-label"></label>
+                <select asp-for="Rooms" class="form-control" asp-items="@(new SelectList(rooms, "Value", "Text"))"></select>
+                <span asp-validation-for="Rooms" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="City" class="control-label"></label>
+                <select asp-for="City" class="form-control" asp-items="@(new SelectList(cities))"></select>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="District" class="control-label"></label>
+                <input asp-for="District" class="form-control" />
+                <span asp-validation-for="District" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Street" class="control-label"></label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="BuildingType" class="control-label"></label>
+                <select asp-for="BuildingType" class="form-control" asp-items="@(new SelectList(buildingTypes))"></select>
+                <span asp-validation-for="BuildingType" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Floor" class="control-label"></label>
+                <select asp-for="Floor" class="form-control" asp-items="@(new SelectList(floors, "Value", "Text"))"></select>
+                <span asp-validation-for="Floor" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="TotalFloors" class="control-label"></label>
+                <select asp-for="TotalFloors" class="form-control" asp-items="@(new SelectList(floors, "Value", "Text"))"></select>
+                <span asp-validation-for="TotalFloors" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="YearBuilt" class="control-label"></label>
+                <input asp-for="YearBuilt" class="form-control" />
+                <span asp-validation-for="YearBuilt" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="OwnershipType" class="control-label"></label>
+                <select asp-for="OwnershipType" class="form-control" asp-items="@(new SelectList(ownershipTypes))"></select>
+                <span asp-validation-for="OwnershipType" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="AvailableFrom" class="control-label"></label>
+                <input asp-for="AvailableFrom" class="form-control" />
+                <span asp-validation-for="AvailableFrom" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Rent" class="control-label"></label>
+                <input asp-for="Rent" class="form-control" />
+                <span asp-validation-for="Rent" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="AdvertiserType" class="control-label"></label>
+                <select asp-for="AdvertiserType" class="form-control" asp-items="@(new SelectList(advertiserTypes))"></select>
+                <span asp-validation-for="AdvertiserType" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EnergyCertificate" class="control-label"></label>
+                <select asp-for="EnergyCertificate" class="form-control" asp-items="@(new SelectList(energyCertificates))"></select>
+                <span asp-validation-for="EnergyCertificate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Internet" class="form-check-input" />
+                    <label asp-for="Internet" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Internet" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="CableTV" class="form-check-input" />
+                    <label asp-for="CableTV" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="CableTV" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Phone" class="form-check-input" />
+                    <label asp-for="Phone" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="AntiBurglaryBlinds" class="form-check-input" />
+                    <label asp-for="AntiBurglaryBlinds" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="AntiBurglaryBlinds" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Monitoring" class="form-check-input" />
+                    <label asp-for="Monitoring" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Monitoring" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="AlarmSystem" class="form-check-input" />
+                    <label asp-for="AlarmSystem" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="AlarmSystem" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Intercom" class="form-check-input" />
+                    <label asp-for="Intercom" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Intercom" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="ClosedArea" class="form-check-input" />
+                    <label asp-for="ClosedArea" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="ClosedArea" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Furnished" class="form-check-input" />
+                    <label asp-for="Furnished" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Furnished" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="WashingMachine" class="form-check-input" />
+                    <label asp-for="WashingMachine" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="WashingMachine" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Fridge" class="form-check-input" />
+                    <label asp-for="Fridge" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Fridge" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Stove" class="form-check-input" />
+                    <label asp-for="Stove" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Stove" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Television" class="form-check-input" />
+                    <label asp-for="Television" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Television" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Dishwasher" class="form-check-input" />
+                    <label asp-for="Dishwasher" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Dishwasher" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" asp-for="Oven" class="form-check-input" />
+                    <label asp-for="Oven" class="form-check-label"></label>
+                </div>
+                <span asp-validation-for="Oven" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label>Dodaj zdjęcia</label>
+                <input type="file" name="Photos" class="form-control-file" multiple />
+                @if (Model.ImagePaths != null && Model.ImagePaths.Count > 0)
+                {
+                    <div class="mt-2">
+                        <h5>Aktualne zdjęcia:</h5>
+                        @foreach (var imagePath in Model.ImagePaths)
+                        {
+                            <div class="d-inline-block mr-2">
+                                <img src="@imagePath" class="img-thumbnail" style="width: 150px; height: auto;" />
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Zapisz" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
